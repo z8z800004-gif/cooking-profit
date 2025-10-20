@@ -49,32 +49,45 @@ function resetLocal() {
 
 // -------------- 원가 계산 -------------- //
 function calcCost(name) {
-  // 직접 가격
+  // 직접 가격이 정의된 경우 (씨앗·기타)
   for (const cat of Object.values(ingredients)) {
-    if (cat[name]?.가격 !== undefined) return cat[name].가격;
+    if (cat[name]?.가격 !== undefined && !cat[name]?.구성) {
+      return cat[name].가격;
+    }
   }
 
-  // 베이스 조합
-  if (ingredients['베이스']?.[name]) {
-    const info = ingredients['베이스'][name];
+  // 베이스의 경우 (재귀 계산)
+  const baseInfo = ingredients['베이스']?.[name];
+  if (baseInfo) {
     let total = 0;
-    for (const [sub, cnt] of Object.entries(info.구성)) {
-      total += calcCost(sub) * cnt;
+    for (const [sub, cnt] of Object.entries(baseInfo.구성)) {
+      const subCost = calcCost(sub);
+      const subInfo = findIngredient(sub);
+
+      // 수확량 고려 (씨앗 → 작물)
+      const harvest = subInfo?.수확량 ?? 1;
+      const cropCost = subCost / harvest;
+
+      // 작물 8개 모아 베이스 1개 조합 (필요작물수 고려)
+      total += cropCost * (baseInfo.필요작물수 ?? 8) * cnt;
     }
-    return total / (info.조합량 ?? 1);
+
+    // 조합량(=결과물 수량) 고려
+    return total / (baseInfo.조합량 ?? 1);
   }
 
   console.warn('가격정보 없음:', name);
   return 0;
 }
 
-function getRecipeCost(recipe) {
-  let total = 0;
-  for (const [mat, cnt] of Object.entries(recipe.재료)) {
-    total += calcCost(mat) * cnt;
+// 재료 탐색 유틸
+function findIngredient(name) {
+  for (const group of Object.values(ingredients)) {
+    if (group[name]) return group[name];
   }
-  return total;
+  return null;
 }
+
 
 // -------------- 렌더링 -------------- //
 function renderRecipeTable() {
