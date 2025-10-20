@@ -147,7 +147,28 @@
 </div> <!-- main-container 끝 -->
 
 <script>
-// JS 기능은 다음 단계에서 추가됩니다.
+// ✅ 모든 input 필드를 가져옴
+const inputs = document.querySelectorAll("input[type='number']");
+
+// ✅ 페이지 로드 시 저장된 데이터 불러오기
+window.addEventListener("load", () => {
+  inputs.forEach(input => {
+    const key = input.id || input.name || input.placeholder || input.labels?.[0]?.innerText || input.parentNode?.innerText.trim();
+    const savedValue = localStorage.getItem(key);
+    if (savedValue !== null) {
+      input.value = savedValue;
+    }
+  });
+});
+
+// ✅ 입력 시 자동 저장
+inputs.forEach(input => {
+  input.addEventListener("input", () => {
+    const key = input.id || input.name || input.placeholder || input.labels?.[0]?.innerText || input.parentNode?.innerText.trim();
+    const value = input.value;
+    if (key) localStorage.setItem(key, value);
+  });
+});
 </script>
 
 </body>
