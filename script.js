@@ -144,7 +144,26 @@ function renderIngredientTable() {
 function renderAll() {
   renderRecipeTable();
   renderIngredientTable();
+  renderBaseTable();
 }
+
+function renderBaseTable() {
+  const tbody = document.querySelector('#base-table tbody');
+  tbody.innerHTML = '';
+  const bases = ingredients['베이스'] || {};
+  Object.entries(bases).forEach(([name, info]) => {
+    const cost = calcCost(name);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${name}</td>
+      <td>${info.필요작물수 ?? 8}</td>
+      <td>${info.조합량 ?? 1}</td>
+      <td>${cost.toFixed(1)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
 
 // -------------- 이벤트 연결 -------------- //
 document.getElementById('load-data').addEventListener('click', loadData);
