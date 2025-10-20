@@ -139,12 +139,81 @@
     </div>
   </div> <!-- left-panel 끝 -->
   <!-- right-panel -->
-  <div class="right-panel">
-    <h2>요리 수익 계산</h2>
-    <p style="color:#7aa2c4;">이 영역은 다음 단계에서 기능이 추가됩니다.</p>
-    <p>현재 단계: 재료 가격 UI 구성 완료 ✅</p>
+ <div class="right-panel">
+  <h2>요리 수익 계산</h2>
+
+  <div style="background:#162032; padding:15px; border-radius:10px; border:1px solid #4cc9f0;">
+    <label>🍽 요리 이름:</label><br>
+    <input type="text" id="dishName" placeholder="예: 토마토 파스타" style="width:60%;"><br><br>
+
+    <label>💰 판매 가격 (1개당):</label><br>
+    <input type="number" id="dishPrice" placeholder="예: 1890"><br><br>
+
+    <h3>🌱 씨앗 가격 (64개 세트 기준)</h3>
+    <label>토마토 씨앗:</label> <input type="number" id="tomatoSeed" placeholder="예: 5312"><br>
+    <label>양파 씨앗:</label> <input type="number" id="onionSeed" placeholder="예: 5824"><br>
+    <label>마늘 씨앗:</label> <input type="number" id="garlicSeed" placeholder="예: 5696"><br><br>
+
+    <h3>🥕 기타 재료 단가 (1개당)</h3>
+    <label>당근 묶음:</label> <input type="number" id="carrotBundleP" placeholder="예: 78"><br>
+    <label>호박 묶음:</label> <input type="number" id="pumpkinBundleP" placeholder="예: 0"><br>
+    <label>밀가루 반죽:</label> <input type="number" id="doughP" placeholder="예: 12"><br>
+    <label>익힌 양다리살:</label> <input type="number" id="meatP" placeholder="예: 31"><br><br>
+
+    <button id="calcBtn" style="background:#4cc9f0; border:none; color:#0f1624; font-weight:bold; padding:8px 15px; border-radius:5px; cursor:pointer;">
+      ⚙️ 수익 계산하기
+    </button>
+
+    <div id="resultBox" style="margin-top:15px; background:#0f1624; padding:10px; border-radius:5px; border:1px solid #334155;"></div>
   </div>
-</div> <!-- main-container 끝 -->
+</div>
+
+<script>
+document.getElementById("calcBtn").addEventListener("click", () => {
+  const dishName = document.getElementById("dishName").value || "요리";
+  const dishPrice = Number(document.getElementById("dishPrice").value) || 0;
+
+  // 씨앗 가격
+  const tomatoSeed = Number(document.getElementById("tomatoSeed").value) || 0;
+  const onionSeed = Number(document.getElementById("onionSeed").value) || 0;
+  const garlicSeed = Number(document.getElementById("garlicSeed").value) || 0;
+
+  // 재료 단가
+  const carrot = Number(document.getElementById("carrotBundleP").value) || 0;
+  const pumpkin = Number(document.getElementById("pumpkinBundleP").value) || 0;
+  const dough = Number(document.getElementById("doughP").value) || 0;
+  const meat = Number(document.getElementById("meatP").value) || 0;
+
+  // 64개 세트 기준 생산 계산
+  const tomatoBase = 64 * 2.0 / 8;  // 16
+  const onionBase = 64 * 1.5 / 8;   // 12
+  const garlicBase = 64 * 2.5 / 8;  // 20
+  const totalDishes = Math.min(tomatoBase, onionBase, garlicBase); // 병목 작물
+
+  // 총 비용 계산
+  const totalCost = tomatoSeed + onionSeed + garlicSeed
+                   + totalDishes * (carrot + pumpkin + dough + meat);
+
+  const totalRevenue = totalDishes * dishPrice;
+  const profit = totalRevenue - totalCost;
+  const roi = totalCost > 0 ? ((profit / totalCost) * 100).toFixed(1) : 0;
+
+  let color = profit >= 0 ? "#4caf50" : "#e63946";
+  const resultBox = document.getElementById("resultBox");
+
+  resultBox.innerHTML = `
+    <h3 style="color:#4cc9f0;">📊 ${dishName} 수익 분석</h3>
+    <p>✅ 생산 가능 요리 수: <b>${totalDishes}</b>개</p>
+    <p>💰 총 비용: <b>${totalCost.toLocaleString()}</b>원</p>
+    <p>💵 총 매출: <b>${totalRevenue.toLocaleString()}</b>원</p>
+    <p style="color:${color}; font-weight:bold;">
+      ${profit >= 0 ? "이익" : "손해"}: ${profit.toLocaleString()}원
+      (${roi}%)
+    </p>
+  `;
+});
+</script>
+
 
 <script>
 // ✅ 모든 input 필드를 가져옴
