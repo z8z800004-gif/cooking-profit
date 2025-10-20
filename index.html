@@ -9,10 +9,9 @@
       background-color: #0f1624;
       color: #d0d8e2;
       margin: 0;
-      padding: 0;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      height: 100vh;
     }
     header {
       width: 100%;
@@ -25,19 +24,44 @@
       border-bottom: 2px solid #4cc9f0;
       text-shadow: 0 0 8px #4cc9f0;
     }
-    p {
-      color: #9aa4b1;
+    .main-container {
+      display: flex;
+      flex: 1;
     }
-    .container {
-      margin-top: 40px;
-      padding: 20px;
-      border: 1px solid #4cc9f0;
-      border-radius: 8px;
+    .left-panel {
+      width: 30%;
       background: #1b2536;
-      box-shadow: 0 0 10px rgba(76, 201, 240, 0.2);
-      width: 80%;
-      max-width: 600px;
-      text-align: center;
+      border-right: 2px solid #4cc9f0;
+      padding: 15px;
+      overflow-y: auto;
+    }
+    .right-panel {
+      width: 70%;
+      padding: 20px;
+    }
+    h2 {
+      color: #4cc9f0;
+      margin-top: 0;
+    }
+    .category {
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .green { border-left: 5px solid #4caf50; }
+    .red { border-left: 5px solid #e63946; }
+    .blue { border-left: 5px solid #2196f3; }
+    .yellow { border-left: 5px solid #f1c40f; }
+
+    .category-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    hr {
+      border: 0;
+      height: 1px;
+      background: #4cc9f0;
+      opacity: 0.3;
     }
   </style>
 </head>
@@ -45,10 +69,53 @@
 
 <header>🍳 Cooking Profit Manager</header>
 
-<div class="container">
-  <p>✅ 사이트 초기 세팅 완료</p>
-  <p>이 화면이 보이면 정상입니다.</p>
-  <p>이제 여기서부터 <strong>요리 수익 계산 시스템</strong>을 만들기 시작합니다.</p>
+<div class="main-container">
+  <!-- left panel -->
+  <div class="left-panel">
+    <h2>재료 가격 관리</h2>
+
+    <div class="category green">
+      <div class="category-title">🟢 그린델 채집</div>
+      <p>- 토마토베이스</p>
+      <p>- 양파베이스</p>
+      <p>- 마늘베이스</p>
+      <p>- 코코넛</p>
+      <p>- 파인애플</p>
+    </div>
+
+    <div class="category red">
+      <div class="category-title">🔴 그린델 구매·가공</div>
+      <p>- 소금</p>
+      <p>- 요리용 달걀</p>
+      <p>- 요리용 우유</p>
+      <p>- 오일</p>
+      <p>- 요리용 소금</p>
+      <p>- 치즈 조각</p>
+      <p>- 버터 조각</p>
+    </div>
+
+    <div class="category blue">
+      <div class="category-title">🔵 바닐라 가공</div>
+      <p>- 설탕 큐브</p>
+      <p>- 당근 묶음</p>
+      <p>- 감자 묶음</p>
+      <p>- 비트 묶음</p>
+      <p>- 호박 묶음</p>
+      <p>- 수박 묶음</p>
+      <p>- 달콤한 열매 묶음</p>
+    </div>
+
+    <div class="category yellow">
+      <div class="category-title">🟡 바닐라 + 그린델</div>
+      <p>- 밀가루 반죽</p>
+    </div>
+  </div>
+
+  <!-- right panel -->
+  <div class="right-panel">
+    <h2>요리 수익 계산</h2>
+    <p>이 영역은 다음 단계에서 기능 추가됩니다.</p>
+  </div>
 </div>
 
 </body>
